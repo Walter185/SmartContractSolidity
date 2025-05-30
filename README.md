@@ -77,6 +77,13 @@ Permite a los postores retirar el exceso de fondos si sobrepujaron por error (no
 
 ---
 
+## 🔗 Contrato desplegado
+
+Podés ver el contrato en Sepolia Etherscan:
+👉 [0xCE842D92afBd5149Ce552d541E4F8DA6DA42B395](https://sepolia.etherscan.io/address/0xCE842D92afBd5149Ce552d541E4F8DA6DA42B395#code)
+
+---
+
 ## 🧪 Recomendaciones para pruebas
 
 Podés testear este contrato en [Remix IDE](https://remix.ethereum.org):
