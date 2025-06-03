@@ -1,100 +1,99 @@
-# 🏆 SubastaKipu - Contrato Inteligente en Solidity
+# 🏆 SubastaKipu - Smart Contract in Solidity
 
-Contrato inteligente de una subasta con las siguientes características:
-- 📈 Aumento mínimo del 5% por oferta
-- ⏳ Extensión automática si se oferta en los últimos 10 minutos
-- 💸 Reembolsos automáticos a perdedores con una comisión del 2%
-- 🎁 Premio configurable para el ganador
+Smart contract for an auction with the following features:
+- 📈 Minimum 5% increase per bid
+- ⏳ Automatic extension if a bid is placed in the last 10 minutes
+- 💸 Automatic refunds to losing bidders with a 2% fee
+- 🎁 Configurable prize for the winner
 
-## 📜 Licencia
+## 📜 License
 [MIT](https://opensource.org/licenses/MIT)
 
-## ⚙️ Versión
+## ⚙️ Version
 Solidity `^0.8.0`
 
 ---
 
-## 🚀 Cómo funciona
+## 🚀 How It Works
 
 ### 🔧 Constructor
-Inicializa la subasta con:
-- `initialPrice`: Precio base
-- `extensionTime`: Tiempo extra si se oferta al final
-- `duration`: Duración total
+Initializes the auction with:
+- `initialPrice`: Base price
+- `extensionTime`: Extra time if a bid is placed near the end
+- `duration`: Total auction time
 
-### 💰 Función `pujar()`
-Los participantes ofrecen fondos. Para que la oferta sea válida, debe superar al menos un **5%** del valor más alto.
+### 💰 Function `pujar()`
+Participants place bids. To be valid, a bid must exceed the current highest bid by **at least 5%**.
 
-- Si queda menos de 10 minutos, se extiende la duración automáticamente.
-- Guarda la oferta en un mapping y actualiza el mejor postor.
+- If less than 10 minutes remain, the auction time is automatically extended.
+- The bid is stored in a mapping and the highest bidder is updated.
 
-### 🎯 Función `definirPremio(string)`
-Permite al owner definir una descripción del premio.
+### 🎯 Function `definirPremio(string)`
+Allows the owner to define a description of the prize.
 
-### 🎁 Función `transferirPremioAlGanador()`
-Marca el premio como entregado. Solo el owner puede ejecutarlo una vez finalizada la subasta.
+### 🎁 Function `transferirPremioAlGanador()`
+Marks the prize as claimed. Can only be executed by the owner after the auction ends.
 
-### 🛑 Función `finalizarSubasta()`
-Finaliza la subasta si el tiempo ya pasó y:
-- Transfiere el monto al owner
-- Devuelve a los perdedores su oferta menos una comisión del **2%**
+### 🛑 Function `finalizarSubasta()`
+Ends the auction if the time has expired:
+- Transfers the funds to the owner
+- Refunds losing bidders their bids minus a **2%** fee
 
-### 💳 Función `retirarExceso()`
-Permite a los postores retirar el exceso de fondos si sobrepujaron por error (no aplica al ganador).
-
----
-
-## 📊 Funciones de consulta
-
-| Función | Descripción |
-|--------|-------------|
-| `obtenerGanador()` | Devuelve el address y la oferta del ganador |
-| `mostrarOferta(address)` | Muestra cuánto ofertó una dirección |
-| `verTodasLasOfertas()` | Devuelve arrays con participantes y sus montos ofertados |
+### 💳 Function `retirarExceso()`
+Allows bidders to withdraw excess funds in case they overbid (not applicable to the winner).
 
 ---
 
-## 👮 Roles y Seguridad
+## 📊 Query Functions
 
-- 👑 `owner`: Es quien despliega el contrato. Solo él puede:
-  - Definir el premio
-  - Entregar el premio
-  - Finalizar la subasta
-
-- ⛔ Validaciones:
-  - Nadie puede pujar luego de terminado el tiempo
-  - El ganador no puede retirar exceso
-  - Nadie puede reclamar el premio dos veces
+| Function | Description |
+|---------|-------------|
+| `obtenerGanador()` | Returns the address and bid amount of the winner |
+| `mostrarOferta(address)` | Displays how much a specific address bid |
+| `verTodasLasOfertas()` | Returns arrays of participants and their bid amounts |
 
 ---
 
-## 📦 Eventos Emitidos
+## 👮 Roles and Security
 
-- `NuevaOferta(address postor, uint monto)`
-- `SubastaFinalizada(address ganador, uint monto)`
-- `DepositoDevuelto(address postor, uint monto)`
-- `ExcesoRetirado(address postor, uint monto)`
+- 👑 `owner`: The deployer of the contract. Only they can:
+  - Set the prize
+  - Deliver the prize
+  - End the auction
+
+- ⛔ Validations:
+  - No one can bid after the auction has ended
+  - The winner cannot withdraw excess funds
+  - No one can claim the prize more than once
 
 ---
 
-## 🔗 Contrato desplegado
+## 📦 Emitted Events
 
-Podés ver el contrato en Sepolia Etherscan:
+- `NuevaOferta(address bidder, uint amount)`
+- `SubastaFinalizada(address winner, uint amount)`
+- `DepositoDevuelto(address bidder, uint amount)`
+- `ExcesoRetirado(address bidder, uint amount)`
+
+---
+
+## 🔗 Deployed Contract
+
+You can view the contract on Sepolia Etherscan:
 👉 [0xCE842D92afBd5149Ce552d541E4F8DA6DA42B395](https://sepolia.etherscan.io/address/0xCE842D92afBd5149Ce552d541E4F8DA6DA42B395#code)
 
 ---
 
-## 🧪 Recomendaciones para pruebas
+## 🧪 Testing Recommendations
 
-Podés testear este contrato en [Remix IDE](https://remix.ethereum.org):
-1. Pegá el código en un nuevo archivo `.sol`
-2. Compilá con Solidity 0.8.x
-3. Desplegá con valores: `initialPrice`, `extensionTime`, `duration`
-4. Simulá distintas cuentas para pujar y ver reembolsos
+You can test this contract using [Remix IDE](https://remix.ethereum.org):
+1. Paste the code into a new `.sol` file
+2. Compile with Solidity 0.8.x
+3. Deploy with values: `initialPrice`, `extensionTime`, `duration`
+4. Simulate different accounts to place bids and observe refunds
 
 ---
 
-## ✨ Autor
+## ✨ Author
 
-Desarrollado por Walter Liendo - Proyecto educativo con fines demostrativos en blockchain.
-
+Developed by Walter Liendo – Educational project for demonstration purposes in blockchain.
